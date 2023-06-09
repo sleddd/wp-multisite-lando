@@ -1,0 +1,62 @@
+name: wp
+recipe: wordpress
+config:
+  webroot: app
+  ssl: true
+  php: '8.2'
+  via: nginx:1.24
+  database: mysql # Mariadb or mysql
+  xdebug: true
+  config:
+    vhosts: 'config/default.conf'
+    php: 'config/php.ini'
+    phpmyadmin: 'config/phpmyadmin.ini'
+  run_as_root:
+      - ln -snf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+      - echo "America/Los_Angeles" > /etc/timezone
+services:
+  node:
+    type: node:18
+    command: npm start
+    globals:
+      gulp-cli: latest
+  mailhog:
+    type: mailhog
+    hogfrom:
+      - appserver
+  phpmyadmin:
+    type: phpmyadmin
+    hosts:
+      - database
+tooling:
+  npm:
+    service: node
+  node:
+    service: node
+  gulp:
+    service: node
+  yarn:
+    service: node
+  phpcs:
+    service: appserver
+    cmd: /app/vendor/bin/phpcs
+  phpcbf:
+    service: appserver
+    cmd: /app/vendor/bin/phpcbf
+proxy:
+  # Appserver_nginx or appserver for apache
+  appserver_nginx:  
+    - wp.lndo.site
+    - "*.wp.lndo.site"
+  mailhog:
+    - mail.wp.lndo.site
+  phpmyadmin:
+    - pma.wp.lndo.site
+# Add following options to your Browsersync script:
+# "browserSyncOptions": {
+#     "proxy": "https://wp.lndo.site",
+#     "port": 80,
+#     "SSL": true,
+#     "open": false,
+#     "notify": false
+# },
