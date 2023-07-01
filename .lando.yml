@@ -11,9 +11,6 @@ config:
     vhosts: 'config/default.conf'
     php: 'config/php.ini'
     phpmyadmin: 'config/phpmyadmin.ini'
-  run_as_root:
-      - ln -snf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
-      - echo "America/Los_Angeles" > /etc/timezone
 services:
   node:
     type: node:18
