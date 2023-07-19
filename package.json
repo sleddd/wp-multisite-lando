@@ -1,0 +1,16 @@
+{
+  "name": "wp-multisite-lando",
+  "version": "1.0.0",
+  "description": "Lando build for a WP Multisite installation.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sleddd/wp-multisite-lando.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sleddd/wp-multisite-lando/issues"
+  },
+}
