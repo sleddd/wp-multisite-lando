@@ -22,6 +22,11 @@ services:
   node:
     type: node:18
     command: npm start
+    build: 
+      - npm install
+      - gulp
+      - yarn
+#     - bower
     globals:
       gulp-cli: latest
   mailhog:
@@ -41,6 +46,8 @@ tooling:
     service: node
   yarn:
     service: node
+#  bower:
+#   service: node
   phpcs:
     service: appserver
     cmd: /app/vendor/bin/phpcs
@@ -52,6 +59,10 @@ proxy:
   appserver_nginx:  
     - wp.lndo.site
     - "*.wp.lndo.site"
+  mailhog:
+    - mail.wp.lndo.site
+  phpmyadmin:
+    - pma.wp.lndo.site
 # Add following options to your Browsersync script:
 # "browserSyncOptions": {
 #     "proxy": "https://wp.lndo.site",

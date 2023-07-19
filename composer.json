@@ -1,0 +1,25 @@
+{
+  "name": "craynor/wp-multisite-build",
+  "description": "Installing WordPress Multisite in a subdirectory with Composer",
+  "require": {
+    "johnpbloch/wordpress": "6.2.2"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url" : "https://wpackagist.org"
+    }
+  ],
+  "require-dev": {
+    "squizlabs/php_codesniffer": "3.*",
+    "wp-coding-standards/wpcs": "*"
+  },
+  "extra": {
+    "wordpress-install-dir": "app"
+  },
+  "config": {
+    "allow-plugins": {
+      "johnpbloch/wordpress-core-installer": true
+    }
+  }
+}
