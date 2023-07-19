@@ -5,13 +5,20 @@ config:
   ssl: true
   php: '8.2'
   via: nginx:1.24
-  database: mysql # Mariadb or mysql
-  xdebug: true
+  database: mysql:8.0 # Mariadb or mysql
   config:
     vhosts: 'config/default.conf'
     php: 'config/php.ini'
     phpmyadmin: 'config/phpmyadmin.ini'
 services:
+  database:
+    type: mysql:8.0
+    creds: 
+      user: root
+      password: mysql
+      database: wordpress
+    run:
+      - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';FLUSH PRIVILEGES;"
   node:
     type: node:18
     command: npm start
@@ -26,9 +33,9 @@ services:
     hosts:
       - database
 tooling:
-  npm:
+  node: 
     service: node
-  node:
+  npm:
     service: node
   gulp:
     service: node
@@ -45,10 +52,6 @@ proxy:
   appserver_nginx:  
     - wp.lndo.site
     - "*.wp.lndo.site"
-  mailhog:
-    - mail.wp.lndo.site
-  phpmyadmin:
-    - pma.wp.lndo.site
 # Add following options to your Browsersync script:
 # "browserSyncOptions": {
 #     "proxy": "https://wp.lndo.site",
@@ -56,4 +59,4 @@ proxy:
 #     "SSL": true,
 #     "open": false,
 #     "notify": false
-# },
+# }
