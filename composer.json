@@ -2,7 +2,7 @@
   "name": "craynor/wp-multisite-build",
   "description": "Installing WordPress Multisite in a subdirectory with Composer",
   "require": {
-    "johnpbloch/wordpress": "6.2.2"
+    "johnpbloch/wordpress": "6.4.2"
   },
   "repositories": [
     {
@@ -19,7 +19,8 @@
   },
   "config": {
     "allow-plugins": {
-      "johnpbloch/wordpress-core-installer": true
+      "johnpbloch/wordpress-core-installer": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
   }
 }

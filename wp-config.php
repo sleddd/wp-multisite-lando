@@ -23,13 +23,13 @@
 define( 'DB_NAME', 'wordpress' );
 
 /** Database username */
-define( 'DB_USER', 'root' );
+define( 'DB_USER', 'wordpress' );
 
 /** Database password */
-define( 'DB_PASSWORD', 'mysql' );
+define( 'DB_PASSWORD', 'wordpress' );
 
 /** Database hostname */
-define( 'DB_HOST', '127.0.0.1' );
+define( 'DB_HOST', 'database' );
 
 /** Database charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
@@ -81,9 +81,6 @@ $table_prefix = 'wp_';
  */
 define( 'WP_DEBUG', false );
 
-// Load Composer’s autoloader.
-require_once ( __DIR__ . '/vendor/autoload.php' );
-
 /* Move location of wp-content */
 //define( 'WP_CONTENT_DIR', dirname(__FILE__) . '/app/wp-content' );
 //define ('WP_CONTENT_URL', 'https://wp.lndo.site' . '/app/wp-content' );
@@ -97,7 +94,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /* Multisite */
-define( 'WP_ALLOW_MULTISITE', true );
+define( 'MULTISITE', true );
 define( 'SUBDOMAIN_INSTALL', true );
 define( 'DOMAIN_CURRENT_SITE', 'wp.lndo.site' );
 define( 'PATH_CURRENT_SITE', '/' );

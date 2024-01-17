@@ -1,36 +1,37 @@
 name: wp
 recipe: wordpress
-config:
-  webroot: app
-  ssl: true
-  php: '8.2'
-  via: nginx:1.24
-  database: mysql:8.0 # Mariadb or mysql
-  config:
-    vhosts: 'config/default.conf'
-    php: 'config/php.ini'
-    phpmyadmin: 'config/phpmyadmin.ini'
 services:
-  database:
-    type: mysql:8.0
-    creds: 
-      user: root
-      password: mysql
-      database: wordpress
-    run:
-      - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';FLUSH PRIVILEGES;"
-  node:
-    type: node:18
-    command: npm start
-    build: 
+  appserver: 
+    type: php
+    webroot: app
+    config:
+      ssl: true
+      database: 'mysql:8.0'
+      via: 'nginx:1.24'
+      xdebug: true
+      cache: redis
+      composer_version: 2
+      config:
+        php: config/php.ini
+        phpmyadmin: config/phpmyadmin.ini
+    build_as_root:
+      - curl -sL https://deb.nodesource.com/setup_20.x | bash -
+      - apt-get install -y nodejs
       - npm install
-      - gulp
-      - yarn
-#     - bower
-    globals:
+      - npm install gulp-cli -g
+      - npm install yarn -g
+      - composer install
+    globals: 
       gulp-cli: latest
-  mailhog:
+      yarn: latest
+  cache:
+    type: redis
+    persist: true
+  database:
+    portforward: true
+  mail:
     type: mailhog
+    portforward: true
     hogfrom:
       - appserver
   phpmyadmin:
@@ -38,16 +39,16 @@ services:
     hosts:
       - database
 tooling:
-  node: 
-    service: node
+  redis-cli:
+    service: cache
+  node:
+    service: appserver
   npm:
-    service: node
+    service: appserver
   gulp:
-    service: node
+    service: appserver
   yarn:
-    service: node
-#  bower:
-#   service: node
+    service: appserver
   phpcs:
     service: appserver
     cmd: /app/vendor/bin/phpcs
@@ -55,19 +56,10 @@ tooling:
     service: appserver
     cmd: /app/vendor/bin/phpcbf
 proxy:
-  # Appserver_nginx or appserver for apache
-  appserver_nginx:  
+  appserver:
     - wp.lndo.site
-    - "*.wp.lndo.site"
-  mailhog:
-    - mail.wp.lndo.site
+    - '*.wp.lndo.site'
+  mail:
+    - mail.lndo.site
   phpmyadmin:
-    - pma.wp.lndo.site
-# Add following options to your Browsersync script:
-# "browserSyncOptions": {
-#     "proxy": "https://wp.lndo.site",
-#     "port": 80,
-#     "SSL": true,
-#     "open": false,
-#     "notify": false
-# }
+    - pma.lndo.site
